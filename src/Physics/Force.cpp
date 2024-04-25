@@ -56,3 +56,8 @@ Vec2 Force::GenerateSpringForce(const Particle &particle, const Vec2 &anchor, fl
 
     return springForce;
 }
+
+Vec2 Force::GenerateSpringForce(const Particle &a, const Particle &b, float restLength, float k)
+{
+    return Force::GenerateSpringForce(a, b.postion, restLength, k);
+}

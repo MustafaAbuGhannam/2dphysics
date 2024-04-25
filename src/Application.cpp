@@ -15,9 +15,18 @@ void Application::Setup()
     running = Graphics::OpenWindow();
 
     this->anchor = Vec2(Graphics::Width() / 2.0, 30);
-    Particle *bob = new Particle(Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
-    bob->radius = 10;
-    this->particles.push_back(bob);
+    Particle *p1 = new Particle(Graphics::Width() / 2.0, 60, 2.0);
+    p1->radius = 5;
+    this->particles.push_back(p1);
+
+    // create particles
+    int i;
+    for (i = 1; i < 5; i++)
+    {
+        Particle *p = new Particle(Graphics::Width() / 2.0, this->particles[i - 1]->postion.y + 30, 2.0);
+        p->radius = 5;
+        this->particles.push_back(p);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -74,10 +83,10 @@ void Application::Input()
             if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
             {
                 this->leftMouseButtonDown = false;
-                Vec2 impulseDirection = (this->particles[0]->postion - mouseCurser).UnitVector();
-                float impulseMagnitude = (this->particles[0]->postion - mouseCurser).Magnitude() * 5;
+                Vec2 impulseDirection = (this->particles[4]->postion - mouseCurser).UnitVector();
+                float impulseMagnitude = (this->particles[4]->postion - mouseCurser).Magnitude() * 5;
 
-                this->particles[0]->velocity = impulseDirection * impulseMagnitude;
+                this->particles[4]->velocity = impulseDirection * impulseMagnitude;
             }
             break;
         }
@@ -139,6 +148,14 @@ void Application::Update()
     Vec2 springForce = Force::GenerateSpringForce(*particles[0], this->anchor, this->restLength, this->k);
     particles[0]->addForce(springForce);
 
+    int i;
+    for (i = 1; i < this->particles.size(); i++)
+    {
+        Vec2 springForce = Force::GenerateSpringForce(*particles[i], *particles[i - 1], 30, 300);
+        particles[i]->addForce(springForce);
+        particles[i - 1]->addForce(-springForce);
+    }
+
     for (auto particle : this->particles)
     {
         particle->integrate(deltaTime);
@@ -192,6 +209,13 @@ void Application::Render()
     // draw anchor spring
 
     Graphics::DrawLine(anchor.x, anchor.y, particles[0]->postion.x, particles[0]->postion.y, 0xFF313131);
+
+    int i;
+    for (i = 1; i < this->particles.size(); i++)
+    {
+        Graphics::DrawFillCircle(particles[i]->postion.x, particles[i]->postion.y, particles[i]->radius, 0xFF001155);
+        Graphics::DrawLine(particles[i - 1]->postion.x, particles[i - 1]->postion.y, particles[i]->postion.x, particles[i]->postion.y, 0xFF313131);
+    }
 
     // render all particles
     //  for (auto particle : this->particles)
