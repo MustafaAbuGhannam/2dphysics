@@ -2,7 +2,7 @@
 #define APPLICATION_H
 
 #include "./Graphics.h"
-#include "./Physics/Particle.h"
+#include "./Physics/Body.h"
 #include "./Physics/Constants.h"
 #include <vector>
 
@@ -11,7 +11,7 @@ class Application
 private:
     bool running = false;
     bool leftMouseButtonDown = false;
-    std::vector<Particle *> particles;
+    std::vector<Body *> bodies;
     Vec2 pushForce = Vec2(0.0, 0.0);
     Vec2 mouseCurser = Vec2(0.0, 0.0);
 

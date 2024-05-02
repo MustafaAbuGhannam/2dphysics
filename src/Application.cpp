@@ -14,9 +14,9 @@ void Application::Setup()
 {
     running = Graphics::OpenWindow();
 
-    Particle *p1 = new Particle(Graphics::Width() / 2.0, 60, 2.0);
+    Body *p1 = new Body(Graphics::Width() / 2.0, 60, 2.0);
     p1->radius = 5;
-    this->particles.push_back(p1);
+    this->bodies.push_back(p1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,10 +73,10 @@ void Application::Input()
             if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
             {
                 this->leftMouseButtonDown = false;
-                Vec2 impulseDirection = (this->particles[0]->postion - mouseCurser).UnitVector();
-                float impulseMagnitude = (this->particles[0]->postion - mouseCurser).Magnitude() * 5;
+                Vec2 impulseDirection = (this->bodies[0]->postion - mouseCurser).UnitVector();
+                float impulseMagnitude = (this->bodies[0]->postion - mouseCurser).Magnitude() * 5;
 
-                this->particles[0]->velocity = impulseDirection * impulseMagnitude;
+                this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
             }
             break;
         }
@@ -106,74 +106,74 @@ void Application::Update()
     timePreviousFrame = SDL_GetTicks();
 
     // attraction force
-    // Vec2 attraction = Force::GenerateGravitationalForce(*this->particles[0], *this->particles[1], 1000.0, 5, 100);
-    // this->particles[0]->addForce(attraction);
-    // this->particles[1]->addForce(-attraction);
+    // Vec2 attraction = Force::GenerateGravitationalForce(*this->bodies[0], *this->bodies[1], 1000.0, 5, 100);
+    // this->bodies[0]->addForce(attraction);
+    // this->bodies[1]->addForce(-attraction);
 
-    for (auto particle : this->particles)
+    for (auto body : this->bodies)
     {
 
-        // apply wind force to all particles
+        // apply wind force to all bodies
         // Vec2 wind = Vec2(.2 * PIXELS_PER_METER, 0.0);
-        // particle->addForce(wind);
+        // body->addForce(wind);
 
-        // apply weight force to all particles
-        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * particle->mass);
-        particle->addForce(weight);
+        // apply weight force to all bodies
+        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        body->addForce(weight);
 
         // apply a force by keyboard arrow key press
-        particle->addForce(this->pushForce);
+        body->addForce(this->pushForce);
 
         // apply friction force
-        // Vec2 friction = Force::GenerateFrictionForce(*particle, 20);
-        // particle->addForce(friction);
+        // Vec2 friction = Force::GenerateFrictionForce(*body, 20);
+        // body->addForce(friction);
 
-        // apply drag force to all particles if nessecary
-        Vec2 drag = Force::GenerateDragForce(*particle, 0.001);
-        particle->addForce(drag);
+        // apply drag force to all bodies if nessecary
+        Vec2 drag = Force::GenerateDragForce(*body, 0.001);
+        body->addForce(drag);
     }
 
-    // apply stringForce to particle connected to the anchor
+    // apply stringForce to body connected to the anchor
 
-    // Vec2 springForce = Force::GenerateSpringForce(*particles[0], this->anchor, this->restLength, this->k);
-    // particles[0]->addForce(springForce);
+    // Vec2 springForce = Force::GenerateSpringForce(*bodies[0], this->anchor, this->restLength, this->k);
+    // bodies[0]->addForce(springForce);
 
     // int i;
-    // for (i = 1; i < this->particles.size(); i++)
+    // for (i = 1; i < this->bodies.size(); i++)
     // {
-    //     Vec2 springForce = Force::GenerateSpringForce(*particles[i], *particles[i - 1], 30, 300);
-    //     particles[i]->addForce(springForce);
-    //     particles[i - 1]->addForce(-springForce);
+    //     Vec2 springForce = Force::GenerateSpringForce(*bodies[i], *bodies[i - 1], 30, 300);
+    //     bodies[i]->addForce(springForce);
+    //     bodies[i - 1]->addForce(-springForce);
     // }
 
-    for (auto particle : this->particles)
+    for (auto body : this->bodies)
     {
-        particle->integrate(deltaTime);
+        body->integrate(deltaTime);
     }
 
     // check if we got to screen bondres;
-    for (auto particle : this->particles)
+    for (auto body : this->bodies)
     {
-        if (particle->postion.y + particle->radius >= Graphics::Height())
+        if (body->postion.y + body->radius >= Graphics::Height())
         {
-            particle->postion.y = Graphics::Height() - particle->radius;
-            particle->velocity.y = particle->velocity.y * -0.9;
+            body->postion.y = Graphics::Height() - body->radius;
+            body->velocity.y = body->velocity.y * -0.9;
         }
-        else if (particle->postion.y - particle->radius <= 0)
+        else if (body->postion.y - body->radius <= 0)
         {
-            particle->postion.y = particle->radius;
-            particle->velocity.y = particle->velocity.y * -0.9;
+            body->postion.y = body->radius;
+            body->velocity.y = body->velocity.y * -0.9;
         }
-        if (particle->postion.x + particle->radius >= Graphics::Width())
+        if (body->postion.x + body->radius >= Graphics::Width())
         {
-            particle->postion.x = Graphics::Width() - particle->radius;
-            particle->velocity.x = particle->velocity.x * -0.9;
+            body->postion.x = Graphics::Width() - body->radius;
+            body->velocity.x = body->velocity.x * -0.9;
         }
 
-        else if (particle->postion.x - particle->radius <= 0)
+        else if (body->postion.x - body->radius <= 0)
         {
-            particle->postion.x = particle->radius;
-            particle->velocity.x = particle->velocity.x * -0.9;
+            body->postion.x = body->radius;
+            body->velocity.x = body->velocity.x * -0.9;
         }
     }
 }
@@ -187,13 +187,13 @@ void Application::Render()
 
     if (this->leftMouseButtonDown)
     {
-        Graphics::DrawLine(particles[0]->postion.x, particles[0]->postion.y, mouseCurser.x, mouseCurser.y, 0xFF24238A);
+        Graphics::DrawLine(bodies[0]->postion.x, bodies[0]->postion.y, mouseCurser.x, mouseCurser.y, 0xFF24238A);
     }
 
-    // render all particles
-    for (auto particle : this->particles)
+    // render all bodies
+    for (auto body : this->bodies)
     {
-        Graphics::DrawFillCircle(particle->postion.x, particle->postion.y, particle->radius, 0xFFFFFFFF);
+        Graphics::DrawFillCircle(body->postion.x, body->postion.y, body->radius, 0xFFFFFFFF);
     }
     Graphics::RenderFrame();
 }
@@ -204,9 +204,9 @@ void Application::Render()
 void Application::Destroy()
 {
     // TODO: destroy all objects in the scene
-    for (auto particle : this->particles)
+    for (auto body : this->bodies)
     {
-        delete particle;
+        delete body;
     }
     Graphics::CloseWindow();
 }

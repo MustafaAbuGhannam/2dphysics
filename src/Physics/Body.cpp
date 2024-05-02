@@ -1,7 +1,7 @@
-#include "Particle.h"
+#include "Body.h"
 #include <iostream>
 
-Particle::Particle(float x, float y, float mass)
+Body::Body(float x, float y, float mass)
 {
     this->postion = Vec2(x, y);
     this->mass = mass;
@@ -13,15 +13,15 @@ Particle::Particle(float x, float y, float mass)
     {
         this->invMass = 0.0;
     }
-    std::cout << "Partical constructor called !" << std::endl;
+    std::cout << "Body constructor called !" << std::endl;
 }
 
-Particle::~Particle()
+Body::~Body()
 {
-    std::cout << "Parical destructor called !" << std::endl;
+    std::cout << "Body destructor called !" << std::endl;
 }
 
-void Particle::integrate(float dt)
+void Body::integrate(float dt)
 {
     // Find acc
     this->acceleraion = this->sumForces * this->invMass;
@@ -32,12 +32,12 @@ void Particle::integrate(float dt)
     this->clearForces();
 }
 
-void Particle::addForce(const Vec2 &force)
+void Body::addForce(const Vec2 &force)
 {
     this->sumForces += force;
 }
 
-void Particle::clearForces()
+void Body::clearForces()
 {
     this->sumForces = Vec2(0.0, 0.0);
 }
