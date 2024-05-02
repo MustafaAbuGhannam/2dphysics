@@ -14,11 +14,6 @@ private:
     std::vector<Particle *> particles;
     Vec2 pushForce = Vec2(0.0, 0.0);
     Vec2 mouseCurser = Vec2(0.0, 0.0);
-    Vec2 anchor = Vec2(0.0, 0.0);
-    float restLength = 30;
-    float k = 300;
-
-    // SDL_Rect liquid;
 
 public:
     Application() = default;
