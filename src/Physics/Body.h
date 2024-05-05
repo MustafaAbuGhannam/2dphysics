@@ -2,6 +2,7 @@
 #define BODY_H
 
 #include "Vec2.h"
+#include "Shape.h"
 
 struct Body
 {
@@ -16,8 +17,10 @@ struct Body
     float mass;
     float invMass;
 
-    Body(float x, float y, float mass);
+    Body(const Shape& shape, float x, float y, float mass);
     ~Body();
+
+    Shape* shape = NULL;
 
     void integrate(float dt);
     void addForce(const Vec2 &force);

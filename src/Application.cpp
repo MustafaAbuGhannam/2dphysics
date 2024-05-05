@@ -14,7 +14,7 @@ void Application::Setup()
 {
     running = Graphics::OpenWindow();
 
-    Body *p1 = new Body(Graphics::Width() / 2.0, 60, 2.0);
+    Body *p1 = new Body(CircleSahpe(50), Graphics::Width() / 2.0, 60, 2.0);
     p1->radius = 5;
     this->bodies.push_back(p1);
 }
