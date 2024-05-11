@@ -7,24 +7,39 @@
 
 struct Body
 {
-
+    // Linear motion
     Vec2 postion;
     Vec2 velocity;
-    Vec2 acceleraion;
+    Vec2 acceleration;
 
     Vec2 sumForces;
 
     float mass;
     float invMass;
 
+    // Angular motion
+    float rotation;
+    float angularVelocity;
+    float angularAcceleration;
+
+    float I;
+    float invI;
+
+    float sumTorque;
+
+    Shape *shape = nullptr;
+
     Body(const Shape &shape, float x, float y, float mass);
     ~Body();
 
-    Shape *shape = NULL;
+    void IntegrateLinear(float dt);
+    void AddForce(const Vec2 &force);
+    void ClearForces();
 
-    void integrate(float dt);
-    void addForce(const Vec2 &force);
-    void clearForces();
+    void IntegrateAngular(float dt);
+    void AddTorque(float torque);
+    void ClearTorque();
+
     void CollidedWithScreenBorders();
     void Draw() const;
 };

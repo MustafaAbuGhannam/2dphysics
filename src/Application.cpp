@@ -118,10 +118,14 @@ void Application::Update()
 
         // apply weight force to all bodies
         Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        body->addForce(weight);
+        body->AddForce(weight);
+
+        // apply torque;
+        float torque = 20;
+        body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
-        body->addForce(this->pushForce);
+        body->AddForce(this->pushForce);
 
         // apply friction force
         // Vec2 friction = Force::GenerateFrictionForce(*body, 20);
@@ -129,7 +133,7 @@ void Application::Update()
 
         // apply drag force to all bodies if nessecary
         Vec2 drag = Force::GenerateDragForce(*body, 0.001);
-        body->addForce(drag);
+        body->AddForce(drag);
     }
 
     // apply stringForce to body connected to the anchor
@@ -147,7 +151,8 @@ void Application::Update()
 
     for (auto body : this->bodies)
     {
-        body->integrate(deltaTime);
+        body->IntegrateLinear(deltaTime);
+        body->IntegrateAngular(deltaTime);
     }
 
     // check if we got to screen bondres;
