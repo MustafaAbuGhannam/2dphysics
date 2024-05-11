@@ -1,7 +1,7 @@
 #include "Body.h"
 #include <iostream>
 
-Body::Body(const Shape& shape, float x, float y, float mass)
+Body::Body(const Shape &shape, float x, float y, float mass)
 {
     this->shape = shape.Clone();
     this->postion = Vec2(x, y);
@@ -42,4 +42,36 @@ void Body::addForce(const Vec2 &force)
 void Body::clearForces()
 {
     this->sumForces = Vec2(0.0, 0.0);
+}
+
+void Body::CollidedWithScreenBorders()
+{
+    CircleShape *bodyCircle = (CircleShape *)this->shape;
+
+    if (this->postion.y + bodyCircle->radius >= Graphics::Height())
+    {
+        this->postion.y = Graphics::Height() - bodyCircle->radius;
+        this->velocity.y = this->velocity.y * -0.9;
+    }
+    else if (this->postion.y - bodyCircle->radius <= 0)
+    {
+        this->postion.y = bodyCircle->radius;
+        this->velocity.y = this->velocity.y * -0.9;
+    }
+    if (this->postion.x + bodyCircle->radius >= Graphics::Width())
+    {
+        this->postion.x = Graphics::Width() - bodyCircle->radius;
+        this->velocity.x = this->velocity.x * -0.9;
+    }
+
+    else if (this->postion.x - bodyCircle->radius <= 0)
+    {
+        this->postion.x = bodyCircle->radius;
+        this->velocity.x = this->velocity.x * -0.9;
+    }
+}
+
+void Body::Draw() const
+{
+    this->shape->Draw(this->postion);
 }

@@ -3,10 +3,10 @@
 
 #include "Vec2.h"
 #include "Shape.h"
+#include "../Graphics.h"
 
 struct Body
 {
-    int radius;
 
     Vec2 postion;
     Vec2 velocity;
@@ -17,14 +17,16 @@ struct Body
     float mass;
     float invMass;
 
-    Body(const Shape& shape, float x, float y, float mass);
+    Body(const Shape &shape, float x, float y, float mass);
     ~Body();
 
-    Shape* shape = NULL;
+    Shape *shape = NULL;
 
     void integrate(float dt);
     void addForce(const Vec2 &force);
     void clearForces();
+    void CollidedWithScreenBorders();
+    void Draw() const;
 };
 
 #endif

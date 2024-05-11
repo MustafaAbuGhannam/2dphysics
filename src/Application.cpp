@@ -14,8 +14,7 @@ void Application::Setup()
 {
     running = Graphics::OpenWindow();
 
-    Body *p1 = new Body(CircleSahpe(50), Graphics::Width() / 2.0, 60, 2.0);
-    p1->radius = 5;
+    Body *p1 = new Body(CircleShape(50), Graphics::Width() / 2.0, 60, 2.0);
     this->bodies.push_back(p1);
 }
 
@@ -154,26 +153,9 @@ void Application::Update()
     // check if we got to screen bondres;
     for (auto body : this->bodies)
     {
-        if (body->postion.y + body->radius >= Graphics::Height())
+        if (body->shape->GetType() == CIRCILE)
         {
-            body->postion.y = Graphics::Height() - body->radius;
-            body->velocity.y = body->velocity.y * -0.9;
-        }
-        else if (body->postion.y - body->radius <= 0)
-        {
-            body->postion.y = body->radius;
-            body->velocity.y = body->velocity.y * -0.9;
-        }
-        if (body->postion.x + body->radius >= Graphics::Width())
-        {
-            body->postion.x = Graphics::Width() - body->radius;
-            body->velocity.x = body->velocity.x * -0.9;
-        }
-
-        else if (body->postion.x - body->radius <= 0)
-        {
-            body->postion.x = body->radius;
-            body->velocity.x = body->velocity.x * -0.9;
+            body->CollidedWithScreenBorders();
         }
     }
 }
@@ -193,7 +175,7 @@ void Application::Render()
     // render all bodies
     for (auto body : this->bodies)
     {
-        Graphics::DrawFillCircle(body->postion.x, body->postion.y, body->radius, 0xFFFFFFFF);
+        body->Draw();
     }
     Graphics::RenderFrame();
 }

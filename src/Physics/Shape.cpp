@@ -1,55 +1,63 @@
 #include "Shape.h"
 #include <iostream>
 
-CircleSahpe::CircleSahpe(float radius)
+CircleShape::CircleShape(float radius)
 {
     this->radius = radius;
     std::cout << "CircleShape constructor called!" << std::endl;
 };
 
-CircleSahpe::~CircleSahpe()
+CircleShape::~CircleShape()
 {
     std::cout << "CircleShape destructor called!" << std::endl;
 }
 
-ShapeType CircleSahpe::GetType() const 
+ShapeType CircleShape::GetType() const
 {
     return CIRCILE;
 }
 
-Shape* CircleSahpe::Clone() const
+Shape *CircleShape::Clone() const
 {
-    return new CircleSahpe(this->radius);
+    return new CircleShape(this->radius);
+}
+
+void CircleShape::Draw(Vec2 postion) const
+{
+    Graphics::DrawCircle(postion.x, postion.y, this->radius, 0.0, 0xFFFFFFFF);
 }
 
 PolygonShape::PolygonShape(const std::vector<Vec2> vertices)
 {
-
 }
 
 PolygonShape::~PolygonShape()
 {
-
 }
 
-ShapeType PolygonShape::GetType() const 
+ShapeType PolygonShape::GetType() const
 {
     return POLYGON;
 }
 
-Shape* PolygonShape::Clone() const
+void PolygonShape::Draw(Vec2 postion) const
 {
-    new PolygonShape(this->vertices);
 }
 
-BoxShape::BoxShape(float width, float height) {
+Shape *PolygonShape::Clone() const
+{
+    Shape *cloned = new PolygonShape(this->vertices);
+    return cloned;
+}
+
+BoxShape::BoxShape(float width, float height)
+{
     this->width = width;
     this->height = height;
 };
 
 BoxShape::~BoxShape()
 {
-
 }
 
 ShapeType BoxShape::GetType() const
@@ -57,7 +65,11 @@ ShapeType BoxShape::GetType() const
     return BOX;
 }
 
-Shape* BoxShape::Clone() const
+Shape *BoxShape::Clone() const
 {
     return new BoxShape(this->width, this->height);
+}
+
+void BoxShape::Draw(Vec2 postion) const
+{
 }
