@@ -121,8 +121,8 @@ void Application::Update()
         // body->AddForce(weight);
 
         // apply torque;
-        // float torque = 20;
-        // body->AddTorque(torque);
+        float torque = 200;
+        body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
         // body->AddForce(this->pushForce);
@@ -153,6 +153,15 @@ void Application::Update()
     {
         body->IntegrateLinear(deltaTime);
         body->IntegrateAngular(deltaTime);
+
+        bool isPolyShape = body->shape->GetType() == POLYGON || body->shape->GetType() == BOX;
+
+        if (isPolyShape)
+        {
+            PolygonShape *polyShape = (PolygonShape *)body->shape;
+
+            polyShape->UpdateVertices(body->postion, body->rotation);
+        }
     }
 
     // check if we got to screen bondres;

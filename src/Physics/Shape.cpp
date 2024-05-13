@@ -54,7 +54,7 @@ void PolygonShape::Draw(Vec2 postion, float rotation) const
 
 Shape *PolygonShape::Clone() const
 {
-    Shape *cloned = new PolygonShape(this->vertices);
+    Shape *cloned = new PolygonShape(this->localVertices);
     return cloned;
 }
 
@@ -64,14 +64,32 @@ float PolygonShape::getMomentOfInertia() const
     return 0.0;
 }
 
+void PolygonShape::UpdateVertices(Vec2 position, float rotation)
+{
+    for (int i = 0; i < this->localVertices.size(); i++)
+    {
+        // rotate
+        this->worldVertices[i] = this->localVertices[i].Rotate(rotation);
+
+        // translate
+
+        this->worldVertices[i] += position;
+    }
+}
+
 BoxShape::BoxShape(float width, float height)
 {
     this->width = width;
     this->height = height;
-    this->vertices.push_back(Vec2(-width / 2, -height / 2));
-    this->vertices.push_back(Vec2(+width / 2, -height / 2));
-    this->vertices.push_back(Vec2(+width / 2, +height / 2));
-    this->vertices.push_back(Vec2(-width / 2, +height / 2));
+    this->localVertices.push_back(Vec2(-width / 2, -height / 2));
+    this->localVertices.push_back(Vec2(+width / 2, -height / 2));
+    this->localVertices.push_back(Vec2(+width / 2, +height / 2));
+    this->localVertices.push_back(Vec2(-width / 2, +height / 2));
+
+    this->worldVertices.push_back(Vec2(-width / 2, -height / 2));
+    this->worldVertices.push_back(Vec2(+width / 2, -height / 2));
+    this->worldVertices.push_back(Vec2(+width / 2, +height / 2));
+    this->worldVertices.push_back(Vec2(-width / 2, +height / 2));
 
     std::cout << "BoxShape constructor called!" << std::endl;
 };
@@ -93,7 +111,7 @@ Shape *BoxShape::Clone() const
 
 void BoxShape::Draw(Vec2 postion, float rotation) const
 {
-    Graphics::DrawPolygon(postion.x, postion.y, this->vertices, 0xFFFFFFFF);
+    Graphics::DrawPolygon(postion.x, postion.y, this->worldVertices, 0xFFFFFFFF);
 }
 
 float BoxShape::getMomentOfInertia() const
