@@ -68,6 +68,11 @@ BoxShape::BoxShape(float width, float height)
 {
     this->width = width;
     this->height = height;
+    this->vertices.push_back(Vec2(-width / 2, -height / 2));
+    this->vertices.push_back(Vec2(+width / 2, -height / 2));
+    this->vertices.push_back(Vec2(+width / 2, +height / 2));
+    this->vertices.push_back(Vec2(-width / 2, +height / 2));
+
     std::cout << "BoxShape constructor called!" << std::endl;
 };
 
@@ -88,6 +93,7 @@ Shape *BoxShape::Clone() const
 
 void BoxShape::Draw(Vec2 postion, float rotation) const
 {
+    Graphics::DrawPolygon(postion.x, postion.y, this->vertices, 0xFFFFFFFF);
 }
 
 float BoxShape::getMomentOfInertia() const

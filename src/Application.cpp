@@ -14,7 +14,7 @@ void Application::Setup()
 {
     running = Graphics::OpenWindow();
 
-    Body *p1 = new Body(CircleShape(50), Graphics::Width() / 2.0, 60, 2.0);
+    Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     this->bodies.push_back(p1);
 }
 
@@ -117,23 +117,23 @@ void Application::Update()
         // body->addForce(wind);
 
         // apply weight force to all bodies
-        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        body->AddForce(weight);
+        // Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        // body->AddForce(weight);
 
         // apply torque;
-        float torque = 20;
-        body->AddTorque(torque);
+        // float torque = 20;
+        // body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
-        body->AddForce(this->pushForce);
+        // body->AddForce(this->pushForce);
 
         // apply friction force
         // Vec2 friction = Force::GenerateFrictionForce(*body, 20);
         // body->addForce(friction);
 
         // apply drag force to all bodies if nessecary
-        Vec2 drag = Force::GenerateDragForce(*body, 0.001);
-        body->AddForce(drag);
+        // Vec2 drag = Force::GenerateDragForce(*body, 0.001);
+        // body->AddForce(drag);
     }
 
     // apply stringForce to body connected to the anchor
