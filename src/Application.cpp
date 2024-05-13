@@ -53,31 +53,31 @@ void Application::Input()
             if (event.key.keysym.sym == SDLK_LEFT)
                 this->pushForce.x = 0;
             break;
-        case SDL_MOUSEMOTION:
-            this->mouseCurser.x = event.motion.x;
-            this->mouseCurser.y = event.motion.y;
-            break;
-        case SDL_MOUSEBUTTONDOWN:
+            // case SDL_MOUSEMOTION:
+            //     this->mouseCurser.x = event.motion.x;
+            //     this->mouseCurser.y = event.motion.y;
+            //     break;
+            // case SDL_MOUSEBUTTONDOWN:
 
-            if (!this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
-            {
-                this->leftMouseButtonDown = true;
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                this->mouseCurser.x = x;
-                this->mouseCurser.y = y;
-            }
-            break;
-        case SDL_MOUSEBUTTONUP:
-            if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
-            {
-                this->leftMouseButtonDown = false;
-                Vec2 impulseDirection = (this->bodies[0]->postion - mouseCurser).UnitVector();
-                float impulseMagnitude = (this->bodies[0]->postion - mouseCurser).Magnitude() * 5;
+            //     if (!this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
+            //     {
+            //         this->leftMouseButtonDown = true;
+            //         int x, y;
+            //         SDL_GetMouseState(&x, &y);
+            //         this->mouseCurser.x = x;
+            //         this->mouseCurser.y = y;
+            //     }
+            //     break;
+            // case SDL_MOUSEBUTTONUP:
+            //     if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
+            //     {
+            //         this->leftMouseButtonDown = false;
+            //         Vec2 impulseDirection = (this->bodies[0]->postion - mouseCurser).UnitVector();
+            //         float impulseMagnitude = (this->bodies[0]->postion - mouseCurser).Magnitude() * 5;
 
-                this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
-            }
-            break;
+            //         this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
+            //     }
+            //     break;
         }
     }
 }
