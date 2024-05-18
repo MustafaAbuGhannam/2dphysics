@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "./Physics/Force.h"
 #include "./Physics/Collision.h"
+#include "./Physics/Contact.h"
 #include <iostream>
 
 bool Application::IsRunning()
@@ -59,31 +60,36 @@ void Application::Input()
             if (event.key.keysym.sym == SDLK_LEFT)
                 this->pushForce.x = 0;
             break;
-            // case SDL_MOUSEMOTION:
-            //     this->mouseCurser.x = event.motion.x;
-            //     this->mouseCurser.y = event.motion.y;
-            //     break;
-            // case SDL_MOUSEBUTTONDOWN:
+        // case SDL_MOUSEMOTION:
+        //     this->mouseCurser.x = event.motion.x;
+        //     this->mouseCurser.y = event.motion.y;
+        //     break;
+        // case SDL_MOUSEBUTTONDOWN:
 
-            //     if (!this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
-            //     {
-            //         this->leftMouseButtonDown = true;
-            //         int x, y;
-            //         SDL_GetMouseState(&x, &y);
-            //         this->mouseCurser.x = x;
-            //         this->mouseCurser.y = y;
-            //     }
-            //     break;
-            // case SDL_MOUSEBUTTONUP:
-            //     if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
-            //     {
-            //         this->leftMouseButtonDown = false;
-            //         Vec2 impulseDirection = (this->bodies[0]->postion - mouseCurser).UnitVector();
-            //         float impulseMagnitude = (this->bodies[0]->postion - mouseCurser).Magnitude() * 5;
+        //     if (!this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
+        //     {
+        //         this->leftMouseButtonDown = true;
+        //         int x, y;
+        //         SDL_GetMouseState(&x, &y);
+        //         this->mouseCurser.x = x;
+        //         this->mouseCurser.y = y;
+        //     }
+        //     break;
+        // case SDL_MOUSEBUTTONUP:
+        //     if (this->leftMouseButtonDown && event.button.button == SDL_BUTTON_LEFT)
+        //     {
+        //         this->leftMouseButtonDown = false;
+        //         Vec2 impulseDirection = (this->bodies[0]->postion - mouseCurser).UnitVector();
+        //         float impulseMagnitude = (this->bodies[0]->postion - mouseCurser).Magnitude() * 5;
 
-            //         this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
-            //     }
-            //     break;
+        //         this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
+        //     }
+        //     break;
+        case SDL_MOUSEMOTION:
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            this->bodies[0]->postion = Vec2(x, y);
+            break;
         }
     }
 }
@@ -93,6 +99,9 @@ void Application::Input()
 ///////////////////////////////////////////////////////////////////////////////
 void Application::Update()
 {
+    // temp adding clear screen for debugging reasons
+    Graphics::ClearScreen(0x0);
+
     static int timePreviousFrame;
     int timeToWait = MILLSECS_PER_FRAME - (SDL_GetTicks() - timePreviousFrame);
 
@@ -119,12 +128,12 @@ void Application::Update()
     {
 
         // apply wind force to all bodies
-        Vec2 wind = Vec2(20 * PIXELS_PER_METER, 0.0);
-        body->AddForce(wind);
+        // Vec2 wind = Vec2(20 * PIXELS_PER_METER, 0.0);
+        // body->AddForce(wind);
 
         // apply weight force to all bodies
-        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        body->AddForce(weight);
+        // Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        // body->AddForce(weight);
 
         // apply torque;
         // float torque = 200;
@@ -169,12 +178,19 @@ void Application::Update()
     {
         for (int j = i + 1; j < this->bodies.size(); j++)
         {
-            bool Collided = Collision::IsCollided(this->bodies[i], this->bodies[j]);
+            Body *a = this->bodies[i];
+            Body *b = this->bodies[j];
+            Contact contact;
+            bool Collided = Collision::IsCollided(a, b, contact);
 
             if (Collided)
             {
-                this->bodies[i]->isCollided = true;
-                this->bodies[j]->isCollided = true;
+                Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
+                Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
+                Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);
+
+                a->isCollided = true;
+                b->isCollided = true;
             }
         }
     }
@@ -194,7 +210,8 @@ void Application::Update()
 ///////////////////////////////////////////////////////////////////////////////
 void Application::Render()
 {
-    Graphics::ClearScreen(0xFF056263);
+    // temp remove clear screen from render function for debugging
+    // Graphics::ClearScreen(0xFF056263);
 
     if (this->leftMouseButtonDown)
     {
