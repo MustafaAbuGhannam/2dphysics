@@ -15,8 +15,13 @@ void Application::Setup()
 {
     running = Graphics::OpenWindow();
 
-    Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
-    this->bodies.push_back(p1);
+    // Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
+    // this->bodies.push_back(p1);
+
+    Body *bigCirlce = new Body(CircleShape(100), 100, 100, 1.0);
+    Body *smallCirlce = new Body(CircleShape(50), 500, 100, 1.0);
+    this->bodies.push_back(bigCirlce);
+    this->bodies.push_back(smallCirlce);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -114,16 +119,16 @@ void Application::Update()
     {
 
         // apply wind force to all bodies
-        // Vec2 wind = Vec2(.2 * PIXELS_PER_METER, 0.0);
-        // body->addForce(wind);
+        Vec2 wind = Vec2(20 * PIXELS_PER_METER, 0.0);
+        body->AddForce(wind);
 
         // apply weight force to all bodies
-        // Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        // body->AddForce(weight);
+        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        body->AddForce(weight);
 
         // apply torque;
-        float torque = 200;
-        body->AddTorque(torque);
+        // float torque = 200;
+        // body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
         // body->AddForce(this->pushForce);
@@ -160,7 +165,7 @@ void Application::Update()
         body->isCollided = false;
     }
 
-    for (int i = 0; i < this->bodies.size(); i++)
+    for (int i = 0; i <= this->bodies.size() - 1; i++)
     {
         for (int j = i + 1; j < this->bodies.size(); j++)
         {
@@ -199,8 +204,20 @@ void Application::Render()
     // render all bodies
     for (auto body : this->bodies)
     {
-        body->Draw();
+        Uint32 color = body->isCollided ? 0xFF0000FF : 0xFFFFFFFF;
+
+        if (body->shape->GetType() == CIRCILE)
+        {
+            CircleShape *cirlceShape = (CircleShape *)body->shape;
+            Graphics::DrawCircle(body->postion.x, body->postion.y, cirlceShape->radius, body->rotation, color);
+        }
+        if (body->shape->GetType() == BOX)
+        {
+            BoxShape *boxShape = (BoxShape *)body->shape;
+            Graphics::DrawPolygon(body->postion.x, body->postion.y, boxShape->worldVertices, color);
+        }
     }
+
     Graphics::RenderFrame();
 }
 

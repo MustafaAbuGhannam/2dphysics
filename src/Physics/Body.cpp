@@ -105,11 +105,6 @@ void Body::CollidedWithScreenBorders()
     }
 }
 
-void Body::Draw() const
-{
-    this->shape->Draw(this->postion, this->rotation);
-}
-
 void Body::AddTorque(float torque)
 {
     this->sumTorque += torque;

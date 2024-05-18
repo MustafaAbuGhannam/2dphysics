@@ -9,18 +9,22 @@ bool Collision::IsCollided(Body *a, Body *b)
     {
         return IsCollidedCircleCircle(a, b);
     }
+    else
+    {
+        return false;
+    }
 }
 
 bool Collision::IsCollidedCircleCircle(Body *a, Body *b)
 {
-    CircleShape *aCircle = (CircleShape *)a;
-    CircleShape *bCircle = (CircleShape *)b;
+    CircleShape *aCircle = (CircleShape *)a->shape;
+    CircleShape *bCircle = (CircleShape *)b->shape;
 
-    float radiousSum = aCircle->radius + bCircle->radius;
+    const float radiousSum = aCircle->radius + bCircle->radius;
 
     Vec2 distance = b->postion - a->postion;
 
-    bool isCollided = distance.MagnitudeSquared() >= (radiousSum * radiousSum);
+    bool isCollided = distance.MagnitudeSquared() <= (radiousSum * radiousSum);
 
     return isCollided;
 }

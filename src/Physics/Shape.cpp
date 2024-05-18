@@ -22,11 +22,6 @@ Shape *CircleShape::Clone() const
     return new CircleShape(this->radius);
 }
 
-void CircleShape::Draw(Vec2 postion, float rotation) const
-{
-    Graphics::DrawCircle(postion.x, postion.y, this->radius, rotation, 0xFFFFFFFF);
-}
-
 float CircleShape::getMomentOfInertia() const
 {
     // this is only the shape part of the eq
@@ -46,10 +41,6 @@ PolygonShape::~PolygonShape()
 ShapeType PolygonShape::GetType() const
 {
     return POLYGON;
-}
-
-void PolygonShape::Draw(Vec2 postion, float rotation) const
-{
 }
 
 Shape *PolygonShape::Clone() const
@@ -107,11 +98,6 @@ ShapeType BoxShape::GetType() const
 Shape *BoxShape::Clone() const
 {
     return new BoxShape(this->width, this->height);
-}
-
-void BoxShape::Draw(Vec2 postion, float rotation) const
-{
-    Graphics::DrawPolygon(postion.x, postion.y, this->worldVertices, 0xFFFFFFFF);
 }
 
 float BoxShape::getMomentOfInertia() const

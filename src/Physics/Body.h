@@ -43,7 +43,6 @@ struct Body
     void ClearTorque();
 
     void CollidedWithScreenBorders();
-    void Draw() const;
     void Update(float dt);
 };
 
