@@ -7,6 +7,8 @@
 
 struct Body
 {
+    bool isCollided; // temp addition
+
     // Linear motion
     Vec2 postion;
     Vec2 velocity;

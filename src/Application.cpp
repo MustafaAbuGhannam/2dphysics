@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "./Physics/Force.h"
+#include "./Physics/Collision.h"
 #include <iostream>
 
 bool Application::IsRunning()
@@ -152,6 +153,25 @@ void Application::Update()
     for (auto body : this->bodies)
     {
         body->Update(deltaTime);
+    }
+
+    for (auto body : this->bodies)
+    {
+        body->isCollided = false;
+    }
+
+    for (int i = 0; i < this->bodies.size(); i++)
+    {
+        for (int j = i + 1; j < this->bodies.size(); j++)
+        {
+            bool Collided = Collision::IsCollided(this->bodies[i], this->bodies[j]);
+
+            if (Collided)
+            {
+                this->bodies[i]->isCollided = true;
+                this->bodies[j]->isCollided = true;
+            }
+        }
     }
 
     // check if we got to screen bondres;
