@@ -151,17 +151,7 @@ void Application::Update()
 
     for (auto body : this->bodies)
     {
-        body->IntegrateLinear(deltaTime);
-        body->IntegrateAngular(deltaTime);
-
-        bool isPolyShape = body->shape->GetType() == POLYGON || body->shape->GetType() == BOX;
-
-        if (isPolyShape)
-        {
-            PolygonShape *polyShape = (PolygonShape *)body->shape;
-
-            polyShape->UpdateVertices(body->postion, body->rotation);
-        }
+        body->Update(deltaTime);
     }
 
     // check if we got to screen bondres;

@@ -119,3 +119,18 @@ void Body::ClearTorque()
 {
     this->sumTorque = 0.0;
 }
+
+void Body::Update(float dt)
+{
+    this->IntegrateLinear(dt);
+    this->IntegrateAngular(dt);
+
+    bool isPolyShape = this->shape->GetType() == POLYGON || this->shape->GetType() == BOX;
+
+    if (isPolyShape)
+    {
+        PolygonShape *polyShape = (PolygonShape *)this->shape;
+
+        polyShape->UpdateVertices(this->postion, this->rotation);
+    }
+}

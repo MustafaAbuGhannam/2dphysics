@@ -42,6 +42,7 @@ struct Body
 
     void CollidedWithScreenBorders();
     void Draw() const;
+    void Update(float dt);
 };
 
 #endif
