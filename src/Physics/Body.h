@@ -44,6 +44,7 @@ struct Body
 
     void CollidedWithScreenBorders();
     void Update(float dt);
+    bool IsStatic();
 };
 
 #endif

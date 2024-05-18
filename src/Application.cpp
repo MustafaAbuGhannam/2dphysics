@@ -191,6 +191,8 @@ void Application::Update()
 
                 a->isCollided = true;
                 b->isCollided = true;
+
+                // contact.ResolvePenetration();
             }
         }
     }
