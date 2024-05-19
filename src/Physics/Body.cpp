@@ -14,6 +14,7 @@ Body::Body(const Shape &shape, float x, float y, float mass)
     this->angularVelocity = 0.0;
     this->sumForces = Vec2(0, 0);
     this->sumTorque = 0.0;
+    this->restitution = 1.0;
 
     this->I = this->shape->getMomentOfInertia() * this->mass;
 
@@ -145,4 +146,15 @@ bool Body::IsStatic()
     float ep = 0.005f;
 
     return fabs(this->invMass - 0.0) < ep;
+}
+
+void Body::ApplyImpulse(const Vec2 &j)
+{
+    if (this->IsStatic())
+    {
+        return;
+    }
+
+    velocity += j * this->invMass;
+
 }

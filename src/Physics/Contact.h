@@ -19,6 +19,8 @@ struct Contact
 
     void ResolvePenetration();
     void ResolveWithProjection();
+    void ResolveWithImpulse();
+    void ResolveCollision();
 };
 
 #endif

@@ -27,6 +27,8 @@ struct Body
     float I;
     float invI;
 
+    float restitution;
+
     float sumTorque;
 
     Shape *shape = nullptr;
@@ -45,6 +47,8 @@ struct Body
     void CollidedWithScreenBorders();
     void Update(float dt);
     bool IsStatic();
+
+    void ApplyImpulse(const Vec2& j);
 };
 
 #endif
