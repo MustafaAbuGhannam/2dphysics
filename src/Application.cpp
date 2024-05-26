@@ -19,7 +19,7 @@ void Application::Setup()
     // Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     // this->bodies.push_back(p1);
 
-    Body *bigCirlce = new Body(CircleShape(100), 100, 100, 0.0);
+    Body *bigCirlce = new Body(CircleShape(100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
     this->bodies.push_back(bigCirlce);
 }
 
@@ -93,7 +93,7 @@ void Application::Input()
             {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                Body* smallBall = new Body(CircleShape(40), x, y, 1.0);
+                Body *smallBall = new Body(CircleShape(40), x, y, 1.0);
                 smallBall->restitution = 0.9;
                 this->bodies.push_back(smallBall);
             }
@@ -191,7 +191,7 @@ void Application::Update()
             bool Collided = Collision::IsCollided(a, b, contact);
 
             if (Collided)
-            {   
+            {
                 contact.ResolveCollision();
                 Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
                 Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);

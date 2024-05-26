@@ -156,5 +156,4 @@ void Body::ApplyImpulse(const Vec2 &j)
     }
 
     velocity += j * this->invMass;
-
 }
