@@ -13,8 +13,10 @@ bool Collision::IsCollided(Body *a, Body *b, Contact &contact)
         return IsCollidedCircleCircle(a, b, contact);
     }
 
-    if (aIsPolygon && bIsPolygon) {
+    if (aIsPolygon && bIsPolygon)
+    {
 
+        return IsCollidedPolygonPolygon(a, b, contact);
     }
 
     return false;
@@ -50,10 +52,10 @@ bool Collision::IsCollidedCircleCircle(Body *a, Body *b, Contact &contact)
     return true;
 }
 
-bool Collision::IsCollidedPolygonPolygon(Body *a, Body* b, Contact &contact)
+bool Collision::IsCollidedPolygonPolygon(Body *a, Body *b, Contact &contact)
 {
-    PolygonShape *polygonA = (PolygonShape*) a->shape;
-    PolygonShape *polygonB = (PolygonShape*) b->shape;
+    PolygonShape *polygonA = (PolygonShape *)a->shape;
+    PolygonShape *polygonB = (PolygonShape *)b->shape;
 
     return polygonA->MinimumSeperation(polygonB) <= 0 && polygonB->MinimumSeperation(polygonA) <= 0;
 }

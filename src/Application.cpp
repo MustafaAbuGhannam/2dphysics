@@ -19,8 +19,10 @@ void Application::Setup()
     // Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     // this->bodies.push_back(p1);
 
-    Body *boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
-    Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
+    Body *boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
+    Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
+    boxA->angularVelocity = 0.4;
+    boxB->angularVelocity = 0.1;
     this->bodies.push_back(boxA);
     this->bodies.push_back(boxB);
 }
@@ -90,15 +92,15 @@ void Application::Input()
             SDL_GetMouseState(&x, &y);
             this->bodies[0]->postion = Vec2(x, y);
             break;
-        // case SDL_MOUSEBUTTONDOWN:
-        //     if (event.button.button == SDL_BUTTON_LEFT)
-        //     {
-        //         int x, y;
-        //         SDL_GetMouseState(&x, &y);
-        //         Body *smallBall = new Body(CircleShape(40), x, y, 1.0);
-        //         smallBall->restitution = 0.9;
-        //         this->bodies.push_back(smallBall);
-        //     }
+            // case SDL_MOUSEBUTTONDOWN:
+            //     if (event.button.button == SDL_BUTTON_LEFT)
+            //     {
+            //         int x, y;
+            //         SDL_GetMouseState(&x, &y);
+            //         Body *smallBall = new Body(CircleShape(40), x, y, 1.0);
+            //         smallBall->restitution = 0.9;
+            //         this->bodies.push_back(smallBall);
+            //     }
         }
     }
 }
@@ -145,8 +147,8 @@ void Application::Update()
         // body->AddForce(weight);
 
         // apply torque;
-        float torque = 200;
-        body->AddTorque(torque);
+        // float torque = 400;
+        // body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
         // body->AddForce(this->pushForce);
