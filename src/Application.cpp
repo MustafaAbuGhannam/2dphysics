@@ -19,8 +19,10 @@ void Application::Setup()
     // Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     // this->bodies.push_back(p1);
 
-    Body *bigCirlce = new Body(CircleShape(100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
-    this->bodies.push_back(bigCirlce);
+    Body *boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
+    Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
+    this->bodies.push_back(boxA);
+    this->bodies.push_back(boxB);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,20 +85,20 @@ void Application::Input()
         //         this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
         //     }
         //     break;
-        // case SDL_MOUSEMOTION:
-        //     int x, y;
-        //     SDL_GetMouseState(&x, &y);
-        //     this->bodies[0]->postion = Vec2(x, y);
-        //     break;
-        case SDL_MOUSEBUTTONDOWN:
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                Body *smallBall = new Body(CircleShape(40), x, y, 1.0);
-                smallBall->restitution = 0.9;
-                this->bodies.push_back(smallBall);
-            }
+        case SDL_MOUSEMOTION:
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            this->bodies[0]->postion = Vec2(x, y);
+            break;
+        // case SDL_MOUSEBUTTONDOWN:
+        //     if (event.button.button == SDL_BUTTON_LEFT)
+        //     {
+        //         int x, y;
+        //         SDL_GetMouseState(&x, &y);
+        //         Body *smallBall = new Body(CircleShape(40), x, y, 1.0);
+        //         smallBall->restitution = 0.9;
+        //         this->bodies.push_back(smallBall);
+        //     }
         }
     }
 }
@@ -135,16 +137,16 @@ void Application::Update()
     {
 
         // apply wind force to all bodies
-        Vec2 wind = Vec2(20 * PIXELS_PER_METER, 0.0);
-        body->AddForce(wind);
+        // Vec2 wind = Vec2(20 * PIXELS_PER_METER, 0.0);
+        // body->AddForce(wind);
 
         // apply weight force to all bodies
-        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        body->AddForce(weight);
+        // Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        // body->AddForce(weight);
 
         // apply torque;
-        // float torque = 200;
-        // body->AddTorque(torque);
+        float torque = 200;
+        body->AddTorque(torque);
 
         // apply a force by keyboard arrow key press
         // body->AddForce(this->pushForce);
@@ -192,10 +194,10 @@ void Application::Update()
 
             if (Collided)
             {
-                contact.ResolveCollision();
-                Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
-                Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
-                Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);
+                // contact.ResolveCollision();
+                // Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
+                // Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
+                // Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);
 
                 a->isCollided = true;
                 b->isCollided = true;

@@ -5,9 +5,16 @@ bool Collision::IsCollided(Body *a, Body *b, Contact &contact)
     bool aIsCircle = a->shape->GetType() == CIRCILE;
     bool bIsCircle = b->shape->GetType() == CIRCILE;
 
+    bool aIsPolygon = a->shape->GetType() == BOX || a->shape->GetType() == POLYGON;
+    bool bIsPolygon = b->shape->GetType() == BOX || b->shape->GetType() == POLYGON;
+
     if (aIsCircle && bIsCircle)
     {
         return IsCollidedCircleCircle(a, b, contact);
+    }
+
+    if (aIsPolygon && bIsPolygon) {
+
     }
 
     return false;
@@ -41,4 +48,12 @@ bool Collision::IsCollidedCircleCircle(Body *a, Body *b, Contact &contact)
     contact.depth = (contact.end - contact.start).Magnitude();
 
     return true;
+}
+
+bool Collision::IsCollidedPolygonPolygon(Body *a, Body* b, Contact &contact)
+{
+    PolygonShape *polygonA = (PolygonShape*) a->shape;
+    PolygonShape *polygonB = (PolygonShape*) b->shape;
+
+    return polygonA->MinimumSeperation(polygonB) <= 0 && polygonB->MinimumSeperation(polygonA) <= 0;
 }

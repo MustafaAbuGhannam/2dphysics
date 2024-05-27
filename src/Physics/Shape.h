@@ -43,6 +43,8 @@ struct PolygonShape : public Shape
     Shape *Clone() const override;
     float getMomentOfInertia() const override;
     void UpdateVertices(Vec2 position, float rotation);
+    Vec2 EdgeAt(int index) const;
+    float MinimumSeperation(PolygonShape *other) const;
 };
 
 struct BoxShape : public PolygonShape
