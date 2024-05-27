@@ -56,6 +56,40 @@ bool Collision::IsCollidedPolygonPolygon(Body *a, Body *b, Contact &contact)
 {
     PolygonShape *polygonA = (PolygonShape *)a->shape;
     PolygonShape *polygonB = (PolygonShape *)b->shape;
+    Vec2 aAxis, bAxis;
+    Vec2 aPoint, bPoint;
 
-    return polygonA->MinimumSeperation(polygonB) <= 0 && polygonB->MinimumSeperation(polygonA) <= 0;
+    float aSeperation = polygonA->MinimumSeperation(polygonB, aAxis, aPoint);
+
+    if (aSeperation > 0)
+    {
+        return false;
+    }
+
+    float bSeperation = polygonB->MinimumSeperation(polygonA, bAxis, bPoint);
+
+    if (bSeperation > 0)
+    {
+        return false;
+    }
+
+    contact.a = a;
+    contact.b = b;
+
+    if (aSeperation > bSeperation)
+    {
+        contact.depth = -aSeperation;
+        contact.normal = aAxis.Normal();
+        contact.start = aPoint;
+        contact.end = contact.start + contact.normal * contact.depth;   
+    }
+    else
+    {
+        contact.depth = -bSeperation;
+        contact.normal = -bAxis.Normal();
+        contact.end = bPoint;
+        contact.start = bPoint - contact.normal * contact.depth;
+    }
+
+    
 }

@@ -197,9 +197,9 @@ void Application::Update()
             if (Collided)
             {
                 // contact.ResolveCollision();
-                // Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
-                // Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
-                // Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);
+                Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
+                Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
+                Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);
 
                 a->isCollided = true;
                 b->isCollided = true;
