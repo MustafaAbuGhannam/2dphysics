@@ -22,7 +22,7 @@ void Application::Setup()
     Body *boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
     Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
     boxA->angularVelocity = 0.4;
-    boxB->angularVelocity = 0.1;
+    // boxB->angularVelocity = 0.1;
     this->bodies.push_back(boxA);
     this->bodies.push_back(boxB);
 }
