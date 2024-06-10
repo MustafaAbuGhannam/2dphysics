@@ -49,6 +49,7 @@ struct Body
     bool IsStatic();
 
     void ApplyImpulse(const Vec2& j);
+    void ApplyImpulse(const Vec2& j, const Vec2& r);
 };
 
 #endif

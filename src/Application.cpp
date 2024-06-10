@@ -19,12 +19,15 @@ void Application::Setup()
     // Body *p1 = new Body(BoxShape(200, 100), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 2.0);
     // this->bodies.push_back(p1);
 
-    Body *boxA = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
-    Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 200);
-    boxA->angularVelocity = 0.4;
-    // boxB->angularVelocity = 0.1;
-    this->bodies.push_back(boxA);
+    Body *boxB = new Body(BoxShape(200, 200), Graphics::Width() / 2.0, Graphics::Height() / 2.0, 0.0);
+    Body *floor = new Body(BoxShape(1000, 50), Graphics::Width() / 2.0, Graphics::Height() - 50, 0.0);
+    boxB->rotation = 1.4;
+    
+    boxB->restitution = 0.5;
+    floor->restitution = 0.2;
+
     this->bodies.push_back(boxB);
+    this->bodies.push_back(floor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -87,10 +90,11 @@ void Application::Input()
         //         this->bodies[0]->velocity = impulseDirection * impulseMagnitude;
         //     }
         //     break;
-        case SDL_MOUSEMOTION:
+        case SDL_MOUSEBUTTONDOWN:
             int x, y;
             SDL_GetMouseState(&x, &y);
-            this->bodies[0]->postion = Vec2(x, y);
+            Body *box = new Body(BoxShape(50, 50), x, y, 1);
+            this->bodies.push_back(box);
             break;
             // case SDL_MOUSEBUTTONDOWN:
             //     if (event.button.button == SDL_BUTTON_LEFT)
@@ -143,8 +147,8 @@ void Application::Update()
         // body->AddForce(wind);
 
         // apply weight force to all bodies
-        // Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
-        // body->AddForce(weight);
+        Vec2 weight = Vec2(0.0, 9.8 * PIXELS_PER_METER * body->mass);
+        body->AddForce(weight);
 
         // apply torque;
         // float torque = 400;
@@ -196,7 +200,7 @@ void Application::Update()
 
             if (Collided)
             {
-                // contact.ResolveCollision();
+                contact.ResolveCollision();
                 Graphics::DrawFillCircle(contact.start.x, contact.start.y, 4, 0xFFF000FF);
                 Graphics::DrawFillCircle(contact.end.x, contact.end.y, 4, 0xFFF000FF);
                 Graphics::DrawLine(contact.start.x, contact.start.y, contact.start.x + contact.normal.x * 15, contact.start.y + contact.normal.y * 15, 0xFFF000FF);

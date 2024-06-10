@@ -21,17 +21,24 @@ void Contact::ResolveWithProjection()
 }
 
 void Contact::ResolveWithImpulse()
-{
-    Vec2 vrel = a->velocity - b->velocity;
+{   
+    Vec2 ra = end - a->postion;
+    Vec2 rb = start - b->postion;
+    Vec2 va = a->velocity + Vec2(- a->angularVelocity * ra.y, a->angularVelocity * ra.x);
+    Vec2 vb = b->velocity + Vec2(- b->angularVelocity * rb.y, b->angularVelocity * rb.x);
+    const Vec2 vrel = va - vb;
+
     float e = std::min(a->restitution, b->restitution);
 
-    float impulseMagnitude = -(1 + e) * vrel.Dot(this->normal) / (this->a->invMass + this->b->invMass); 
+    float vrelDotNormal = vrel.Dot(this->normal);
+
+    float impulseMagnitude = -(1 + e) * vrelDotNormal / ((this->a->invMass + this->b->invMass) + ra.Cross(normal) * ra.Cross(normal) * a->invI + rb.Cross(normal) * rb.Cross(normal) * b->invI); 
     Vec2 impulseDirection = this->normal;
 
     Vec2 jn = impulseDirection * impulseMagnitude;
 
-    this->a->ApplyImpulse(jn);
-    this->b->ApplyImpulse(-jn);
+    this->a->ApplyImpulse(jn, ra);
+    this->b->ApplyImpulse(-jn, rb);
 }
 
 void Contact::ResolveCollision()
